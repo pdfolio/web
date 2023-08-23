@@ -1,0 +1,27 @@
+export const skillList = [
+  //language
+  'JAVA',
+  'KOTLIN',
+  'JAVASCRIPT',
+  'TYPESCRIPT',
+  'PYTHON',
+  'PHP',
+  //framework
+  'SPRING',
+  'NEST',
+  'EXPRESS',
+  'DJANGO',
+  'LARAVEL',
+  'REACT',
+  'VUE',
+  'NEXT',
+  'NUXT',
+  //database
+  'ORACLE',
+  'MYSQL',
+  'POSTGRESQL',
+  //etc
+  'AWS',
+  'DOCKER',
+  'GIT',
+];
