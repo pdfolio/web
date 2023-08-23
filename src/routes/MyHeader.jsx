@@ -36,6 +36,11 @@ const MyHeader = () => {
                 <NavLink>글쓰기</NavLink>
               </Link>
             </NavItem>
+            <NavItem>
+              <Link to="/mypage">
+                <NavLink>내정보</NavLink>
+              </Link>
+            </NavItem>
           </Nav>
         </Navbar>
       </>
