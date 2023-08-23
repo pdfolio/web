@@ -28,6 +28,8 @@ const Mypage = () => {
     try {
       const data = await memberApi(`/api/v1/member`, 'DELETE', {});
       alert('withdraw success');
+      localStorage.clear();
+      sessionStorage.clear();
       nav('/');
     } catch (e) {
       alert('fail withdraw member');
