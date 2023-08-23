@@ -24,6 +24,16 @@ const Mypage = () => {
     imageUrl: '',
   });
 
+  const withdraw = async () => {
+    try {
+      const data = await memberApi(`/api/v1/member`, 'DELETE', {});
+      alert('withdraw success');
+      nav('/');
+    } catch (e) {
+      alert('fail withdraw member');
+    }
+  };
+
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     setMember((prev) => ({
@@ -178,6 +188,7 @@ const Mypage = () => {
             }}
           >
             <Button onClick={updateMember}>변경</Button>
+            <Button onClick={withdraw}>회원탈퇴</Button>
           </Col>
         </FormGroup>
       </Form>
