@@ -34,7 +34,7 @@ const MyHeader = () => {
               margin: '1%',
             }}
           >
-            {!state ? (
+            {!state.isLogin ? (
               <Button
                 onClick={toggle}
                 outline
@@ -44,6 +44,14 @@ const MyHeader = () => {
               </Button>
             ) : (
               <>
+                <Link to="/gather/1">
+                  <Button
+                    outline
+                    style={{ marginRight: '10px', border: 'none' }}
+                  >
+                    테스트용1번모집글가기나중에없애야됨
+                  </Button>
+                </Link>
                 <Link to="/project/write">
                   <Button
                     outline

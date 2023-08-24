@@ -14,9 +14,11 @@ import {
 } from 'reactstrap';
 import { noTokenApi, tokenApi } from '../../networks/test/commonApi';
 import ReactMarkdown from 'react-markdown';
+import { isLogin } from '../../store/store';
 
 const GatherDetail = ({ setContent }) => {
   const nav = useNavigate();
+  const { state } = isLogin();
   const { id } = useParams();
   const [newComment, setNewComment] = useState();
   const [reply, setReply] = useState({
@@ -65,6 +67,10 @@ const GatherDetail = ({ setContent }) => {
       const data = await tokenApi(`/api/v1/gather/reply`, 'POST', {
         commentId: reply.commentId,
         content: newComment,
+      });
+      setReply({
+        isReply: false,
+        commentId: 0,
       });
       getGather();
     } catch (error) {
@@ -212,9 +218,9 @@ const GatherDetail = ({ setContent }) => {
               }
               sm={2}
             >
-              {comment.nickName}
+              ⏺️{comment.nickName}
             </Label>
-            <Col sm={10}>
+            <Col sm={8}>
               <Input
                 id={comment.id}
                 name="comment"
@@ -222,15 +228,27 @@ const GatherDetail = ({ setContent }) => {
                 value={comment.content}
               />
             </Col>
+            {comment.memberId == state.info.id && (
+              <Col sm={2}>
+                <Button
+                  outline
+                  onClick={() => {
+                    console.log('취소');
+                  }}
+                >
+                  삭제
+                </Button>
+              </Col>
+            )}
             {reply.isReply && reply.commentId == comment.id && (
-              <>
-                <Label for="comment" sm={2}>
+              <FormGroup row style={{ marginTop: '1%' }}>
+                <Label for="newReply" sm={2}>
                   대댓글달기
                 </Label>
                 <Col sm={8}>
                   <Input
-                    id="comment"
-                    name="comment"
+                    id="newReply"
+                    name="newReply"
                     value={newComment}
                     onChange={(e) => {
                       setNewComment(e.target.value);
@@ -242,23 +260,37 @@ const GatherDetail = ({ setContent }) => {
                     등록
                   </Button>
                 </Col>
-              </>
-            )}
-            {comment.gatherReplies.map((reply, index) => (
-              <FormGroup row key={index} style={{ marginLeft: '3%' }}>
-                <Label for="comment" sm={2}>
-                  {reply.nickName}
-                </Label>
-                <Col sm={8}>
-                  <Input
-                    id="comment"
-                    name="comment"
-                    disabled
-                    value={reply.content}
-                  />
-                </Col>
               </FormGroup>
-            ))}
+            )}
+            <div style={{ marginTop: '2%' }}>
+              {comment.gatherReplies.map((reply, index) => (
+                <FormGroup row key={index} style={{ marginLeft: '1%' }}>
+                  <Label for="comment" sm={2}>
+                    ➡️{reply.nickName}
+                  </Label>
+                  <Col sm={8}>
+                    <Input
+                      id="comment"
+                      name="comment"
+                      disabled
+                      value={reply.content}
+                    />
+                  </Col>
+                  {comment.memberId == state.info.id && (
+                    <Col sm={2}>
+                      <Button
+                        outline
+                        onClick={() => {
+                          console.log('취소');
+                        }}
+                      >
+                        삭제
+                      </Button>
+                    </Col>
+                  )}
+                </FormGroup>
+              ))}
+            </div>
           </FormGroup>
         ))}
       </Form>

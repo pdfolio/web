@@ -14,6 +14,7 @@ const Oauth2Process = () => {
       const data = await oauth2PostApi(`/api/v1/oauth2/google/login`, 'POST', {
         accessToken,
       });
+      console.log('------', data);
       loginSuccessHandler(data, setState);
     } catch (error) {
       alert('oauth2 login fail');
