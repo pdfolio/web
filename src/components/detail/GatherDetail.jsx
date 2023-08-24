@@ -50,6 +50,34 @@ const GatherDetail = ({ setContent }) => {
     }
   };
 
+  const deleteComment = async (e, commentId) => {
+    console.log(e, commentId);
+    try {
+      const data = await noTokenApi(
+        `/api/v1/gather/comment/${commentId}`,
+        'DELETE',
+        {},
+      );
+      getGather();
+    } catch (error) {
+      alert('fail delete comment');
+    }
+  };
+
+  const deleteReply = async (e, commentId) => {
+    console.log(e, commentId);
+    try {
+      const data = await noTokenApi(
+        `/api/v1/gather/reply/${commentId}`,
+        'DELETE',
+        {},
+      );
+      getGather();
+    } catch (error) {
+      alert('fail delete reply');
+    }
+  };
+
   const postComment = async () => {
     try {
       const data = await tokenApi(`/api/v1/gather/comment`, 'POST', {
@@ -83,7 +111,10 @@ const GatherDetail = ({ setContent }) => {
   }, []);
 
   return (
-    <Container fluid="md">
+    <Container
+      fluid="md"
+      style={{ border: 'solid 1px lightgray', padding: '3%' }}
+    >
       <Form>
         <FormGroup row>
           <Label for="title" sm={2}>
@@ -114,8 +145,8 @@ const GatherDetail = ({ setContent }) => {
             <Input
               id="teamSize"
               name="teamSize"
-              value={gather.teamSize}
-              type="number"
+              value={gather.teamSize + '명 모집'}
+              type="text"
               placeholder="모집인원"
               disabled
             />
@@ -168,10 +199,7 @@ const GatherDetail = ({ setContent }) => {
           </Col>
         </FormGroup>
 
-        <FormGroup row>
-          <Label for="contact" sm={2}>
-            내용
-          </Label>
+        <FormGroup row style={{ border: 'solid 1px lightgray', padding: '3%' }}>
           <Col sm={10}>
             <ReactMarkdown
               children={gather.content}
@@ -180,7 +208,7 @@ const GatherDetail = ({ setContent }) => {
           </Col>
         </FormGroup>
 
-        <FormGroup row>
+        <FormGroup row style={{ border: 'solid 1px lightgray', padding: '3%' }}>
           <Label
             for="comment"
             sm={2}
@@ -209,7 +237,11 @@ const GatherDetail = ({ setContent }) => {
           )}
         </FormGroup>
         {gather.gatherCommentList.map((comment, index) => (
-          <FormGroup row key={index}>
+          <FormGroup
+            row
+            key={index}
+            style={{ border: 'solid 1px lightgray', padding: '3%' }}
+          >
             <Label
               id={comment.id}
               for={comment.nickName}
@@ -230,12 +262,7 @@ const GatherDetail = ({ setContent }) => {
             </Col>
             {comment.memberId == state.info.id && (
               <Col sm={2}>
-                <Button
-                  outline
-                  onClick={() => {
-                    console.log('취소');
-                  }}
-                >
+                <Button outline onClick={(e) => deleteComment(e, comment.id)}>
                   삭제
                 </Button>
               </Col>
@@ -276,12 +303,12 @@ const GatherDetail = ({ setContent }) => {
                       value={reply.content}
                     />
                   </Col>
-                  {comment.memberId == state.info.id && (
+                  {reply.memberId == state.info.id && (
                     <Col sm={2}>
                       <Button
                         outline
-                        onClick={() => {
-                          console.log('취소');
+                        onClick={(e) => {
+                          deleteReply(e, reply.id);
                         }}
                       >
                         삭제

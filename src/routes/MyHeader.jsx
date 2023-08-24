@@ -23,7 +23,7 @@ const MyHeader = () => {
           <Link to="/">
             <img
               width={150}
-              src="https://cdn.imweb.me/thumbnail/20230822/a1f437f8ba5e8.png"
+              src="https://github.com/pdfolio/web/assets/71807768/be9bd7df-0b32-484b-a1c9-de9a0a1bda1e"
               alt="logo"
             />
           </Link>

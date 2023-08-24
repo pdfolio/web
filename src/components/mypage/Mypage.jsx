@@ -88,8 +88,10 @@ const Mypage = () => {
             src={member.imageUrl}
             alt="Profile"
             style={{
-              width: '50%',
+              width: '300px',
+              height: '30vh',
               margin: 'auto',
+              borderRadius: '50%',
             }}
           />
         </FormGroup>
