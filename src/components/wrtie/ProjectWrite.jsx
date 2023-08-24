@@ -12,7 +12,7 @@ import {
   Label,
 } from 'reactstrap';
 import { skillList } from '../../utills/skillList';
-import { testApi } from '../../networks/test/testApi';
+import { tokenApi } from '../../networks/test/commonApi';
 
 const ProjectWrite = ({ setContent }) => {
   const editorRef = useRef();
@@ -42,7 +42,7 @@ const ProjectWrite = ({ setContent }) => {
     const content = editorInstance.getMarkdown();
 
     try {
-      const data = await testApi(`/api/v1/member`, 'POST', {
+      const data = await tokenApi(`/api/v1/member`, 'POST', {
         ...form,
         content,
         skills,

@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react';
-import { testApi } from '../../networks/test/testApi';
 import {
   Badge,
   Button,
@@ -13,6 +12,7 @@ import {
 import { skillList } from '../../utills/skillList';
 import { Editor } from '@toast-ui/react-editor';
 import { useNavigate } from 'react-router-dom';
+import { tokenApi } from '../../networks/test/commonApi';
 
 const GatherWrite = ({ setContent }) => {
   const editorRef = useRef();
@@ -44,7 +44,7 @@ const GatherWrite = ({ setContent }) => {
     const content = editorInstance.getMarkdown();
 
     try {
-      const data = await testApi(`/api/v1/gather`, 'POST', {
+      const data = await tokenApi(`/api/v1/gather`, 'POST', {
         ...form,
         content,
         skills,
