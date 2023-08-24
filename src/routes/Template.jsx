@@ -8,7 +8,7 @@ const Template = () => {
     <>
       <MyHeader />
       <Outlet />
-      <MyFooter />
+      {/*<MyFooter />*/}
     </>
   );
 };

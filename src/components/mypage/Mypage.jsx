@@ -28,6 +28,8 @@ const Mypage = () => {
     try {
       const data = await memberApi(`/api/v1/member`, 'DELETE', {});
       alert('withdraw success');
+      localStorage.clear();
+      sessionStorage.clear();
       nav('/');
     } catch (e) {
       alert('fail withdraw member');
@@ -42,11 +44,11 @@ const Mypage = () => {
     }));
   };
 
-  const [memberSkills, setMemberSkills] = useState([]);
   useEffect(() => {
     getMember();
   }, []);
 
+  const [memberSkills, setMemberSkills] = useState([]);
   const skillChangeHandler = (e) => {
     const { value } = e.target;
     if (value !== '') {
@@ -81,16 +83,15 @@ const Mypage = () => {
   return (
     <Container fluid="md">
       <Form>
-        <FormGroup
-          row
-          style={{
-            width: '50%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <img src={member.imageUrl} alt="Profile" />
+        <FormGroup row>
+          <img
+            src={member.imageUrl}
+            alt="Profile"
+            style={{
+              width: '50%',
+              margin: 'auto',
+            }}
+          />
         </FormGroup>
         <FormGroup row>
           <Label for="memberId" sm={2}>
