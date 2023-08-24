@@ -13,20 +13,22 @@ import {
 import { skillList } from '../../utills/skillList';
 import { oauth2PostApi } from '../../networks/member/oauth2Api';
 import { useNavigate } from 'react-router-dom';
-import { loginSuccessHandler } from '../../utills/loginSuccessHandler';
+import { loginSuccessHandler } from '../../utills/userUtils';
+import { isLogin } from '../../store/store';
 
 const SignupPage = () => {
   const nav = useNavigate();
   const { accessToken, providerName } = JSON.parse(
     sessionStorage.getItem('signup'),
   );
+  const { state, setState } = isLogin();
 
   const [skills, setSkills] = useState([]);
 
   const signup = async () => {
     try {
       const data = await oauth2PostApi(
-        `/api/v1/oauth2/${providerName}/signup`,
+        `/api/v1/oauth2/${'google'}/signup`,
         'POST',
         {
           accessToken,
@@ -35,7 +37,7 @@ const SignupPage = () => {
           skills,
         },
       );
-      loginSuccessHandler(data);
+      loginSuccessHandler(data, setState);
       alert('signup success');
       nav('/');
     } catch (e) {
