@@ -97,6 +97,7 @@ const GatherWrite = ({ setContent }) => {
               onChange={formChangeHandler}
             />
           </Col>
+
           <Col sm={2}>
             <Input
               id="startDate"
@@ -122,8 +123,10 @@ const GatherWrite = ({ setContent }) => {
             기술스택
           </Label>
           <Col sm={10}>
-            {skills.map((skill) => (
-              <Badge color="primary">{skill}</Badge>
+            {skills.map((skill, index) => (
+              <Badge key={index} color="primary">
+                {skill}
+              </Badge>
             ))}
           </Col>
         </FormGroup>
@@ -138,8 +141,10 @@ const GatherWrite = ({ setContent }) => {
               onChange={skillChangeHandler}
             >
               <option value="">기술스택</option>
-              {skillList.map((skill) => (
-                <option value={skill}>{skill}</option>
+              {skillList.map((skill, index) => (
+                <option key={index} value={skill}>
+                  {skill}
+                </option>
               ))}
             </Input>
           </Col>

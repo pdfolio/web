@@ -4,6 +4,7 @@ import remarkGfm from 'remark-gfm';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   Badge,
+  Button,
   Col,
   Container,
   Form,
@@ -11,16 +12,22 @@ import {
   Input,
   Label,
 } from 'reactstrap';
-import { noTokenApi } from '../../networks/test/commonApi';
+import { noTokenApi, tokenApi } from '../../networks/test/commonApi';
 import ReactMarkdown from 'react-markdown';
 
 const GatherDetail = ({ setContent }) => {
   const nav = useNavigate();
   const { id } = useParams();
+  const [newComment, setNewComment] = useState();
+  const [reply, setReply] = useState({
+    isReply: false,
+    commentId: 0,
+  });
   const [gather, setGather] = useState({
     title: '',
     content: '',
     teamSize: 0,
+    gatherCommentList: [],
     contact: '',
     category: 'STUDY',
     startDate: '',
@@ -30,6 +37,7 @@ const GatherDetail = ({ setContent }) => {
   const [gatherSkills, setGatherSkills] = useState([]);
 
   const getGather = async () => {
+    setNewComment('');
     try {
       const data = await noTokenApi(`/api/v1/gather/detail/${id}`, 'GET', {});
       setGather(data);
@@ -40,17 +48,33 @@ const GatherDetail = ({ setContent }) => {
     }
   };
 
+  const postComment = async () => {
+    try {
+      const data = await tokenApi(`/api/v1/gather/comment`, 'POST', {
+        gatherId: id,
+        content: newComment,
+      });
+      getGather();
+    } catch (error) {
+      alert('fail post comment');
+    }
+  };
+
+  const postReply = async () => {
+    try {
+      const data = await tokenApi(`/api/v1/gather/reply`, 'POST', {
+        commentId: reply.commentId,
+        content: newComment,
+      });
+      getGather();
+    } catch (error) {
+      alert('fail reply comment');
+    }
+  };
+
   useEffect(() => {
     getGather();
   }, []);
-
-  const [skills, setSkills] = useState([]);
-  const skillChangeHandler = (e) => {
-    const { value } = e.target;
-    if (value !== '') {
-      setSkills((prev) => [...prev, value]);
-    }
-  };
 
   return (
     <Container fluid="md">
@@ -149,6 +173,94 @@ const GatherDetail = ({ setContent }) => {
             />
           </Col>
         </FormGroup>
+
+        <FormGroup row>
+          <Label
+            for="comment"
+            sm={2}
+            onClick={(e) => setReply({ isReply: false, commentId: 0 })}
+          >
+            댓글달기
+          </Label>
+          {reply.isReply || (
+            <>
+              <Col sm={8}>
+                <Input
+                  id="comment"
+                  name="comment"
+                  value={newComment}
+                  onChange={(e) => {
+                    setNewComment(e.target.value);
+                  }}
+                />
+              </Col>
+              <Col sm={2}>
+                <Button outline onClick={postComment}>
+                  등록
+                </Button>
+              </Col>
+            </>
+          )}
+        </FormGroup>
+        {gather.gatherCommentList.map((comment, index) => (
+          <FormGroup row key={index}>
+            <Label
+              id={comment.id}
+              for={comment.nickName}
+              onClick={(e) =>
+                setReply({ isReply: true, commentId: e.target.id })
+              }
+              sm={2}
+            >
+              {comment.nickName}
+            </Label>
+            <Col sm={10}>
+              <Input
+                id={comment.id}
+                name="comment"
+                disabled
+                value={comment.content}
+              />
+            </Col>
+            {reply.isReply && reply.commentId == comment.id && (
+              <>
+                <Label for="comment" sm={2}>
+                  대댓글달기
+                </Label>
+                <Col sm={8}>
+                  <Input
+                    id="comment"
+                    name="comment"
+                    value={newComment}
+                    onChange={(e) => {
+                      setNewComment(e.target.value);
+                    }}
+                  />
+                </Col>
+                <Col sm={2}>
+                  <Button outline onClick={postReply}>
+                    등록
+                  </Button>
+                </Col>
+              </>
+            )}
+            {comment.gatherReplies.map((reply, index) => (
+              <FormGroup row key={index} style={{ marginLeft: '3%' }}>
+                <Label for="comment" sm={2}>
+                  {reply.nickName}
+                </Label>
+                <Col sm={8}>
+                  <Input
+                    id="comment"
+                    name="comment"
+                    disabled
+                    value={reply.content}
+                  />
+                </Col>
+              </FormGroup>
+            ))}
+          </FormGroup>
+        ))}
       </Form>
     </Container>
   );
