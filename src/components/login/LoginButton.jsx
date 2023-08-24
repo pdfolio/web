@@ -10,8 +10,8 @@ const LoginButton = ({ provider }) => {
   return (
     <Container>
       <Row>
-        <Button outline color="info" onClick={oauth2Handler}>
-          <Col>
+        <Button outline onClick={oauth2Handler}>
+          <Col style={{ marginTop: '20px' }}>
             <img width={30} src={`/img/${provider}.png`} alt="oauth2Login" />
           </Col>
           <Col>
