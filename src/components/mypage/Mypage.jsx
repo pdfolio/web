@@ -81,7 +81,13 @@ const Mypage = () => {
   };
 
   return (
-    <Container fluid="md">
+    <Container
+      fluid="md"
+      style={{
+        border: 'solid 1px lightgray',
+        padding: '3%',
+      }}
+    >
       <Form>
         <FormGroup row>
           <img
@@ -160,7 +166,7 @@ const Mypage = () => {
               type="select"
               onChange={skillChangeHandler}
             >
-              <option value="">기술스택(이름을 들어봤다)</option>
+              <option value="">기술스택</option>
               {skillList.map((skill) => (
                 <option value={skill}>{skill}</option>
               ))}

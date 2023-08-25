@@ -13,10 +13,11 @@ import {
 } from 'reactstrap';
 import { skillList } from '../../utills/skillList';
 import { tokenApi } from '../../networks/test/commonApi';
+import { useNavigate } from 'react-router-dom';
 
 const ProjectWrite = ({ setContent }) => {
   const editorRef = useRef();
-
+  const nav = useNavigate();
   const [form, setForm] = useState({
     title: '',
     description: '',
@@ -42,20 +43,26 @@ const ProjectWrite = ({ setContent }) => {
     const content = editorInstance.getMarkdown();
 
     try {
-      const data = await tokenApi(`/api/v1/member`, 'POST', {
+      const data = await tokenApi(`/api/v1/project`, 'POST', {
         ...form,
         content,
-        skills,
+        projectSkills: skills,
       });
       alert('post success');
-      console.log(data);
+      nav('/');
     } catch (e) {
       alert('post fail');
     }
   };
 
   return (
-    <Container fluid="md">
+    <Container
+      fluid="md"
+      style={{
+        border: 'solid 1px lightgray',
+        padding: '3%',
+      }}
+    >
       <Form>
         <FormGroup row>
           <Label for="title" sm={2}>

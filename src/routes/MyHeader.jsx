@@ -49,7 +49,16 @@ const MyHeader = () => {
                     outline
                     style={{ marginRight: '10px', border: 'none' }}
                   >
-                    테스트용1번모집글가기나중에없애야됨
+                    테스트용1번모집글
+                  </Button>
+                </Link>
+
+                <Link to="/project/1">
+                  <Button
+                    outline
+                    style={{ marginRight: '10px', border: 'none' }}
+                  >
+                    테스트용1번프로젝트
                   </Button>
                 </Link>
                 <Link to="/project/write">

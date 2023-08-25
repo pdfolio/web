@@ -46,7 +46,8 @@ const GatherDetail = ({ setContent }) => {
       console.log(data);
       setGatherSkills(data.skills);
     } catch (error) {
-      alert('fail get member');
+      alert('fail get gather');
+      nav('/');
     }
   };
 
@@ -199,7 +200,13 @@ const GatherDetail = ({ setContent }) => {
           </Col>
         </FormGroup>
 
-        <FormGroup row style={{ border: 'solid 1px lightgray', padding: '3%' }}>
+        <FormGroup
+          row
+          style={{
+            border: 'solid 1px lightgray',
+            padding: '3%',
+          }}
+        >
           <Col sm={10}>
             <ReactMarkdown
               children={gather.content}
@@ -236,90 +243,99 @@ const GatherDetail = ({ setContent }) => {
             </>
           )}
         </FormGroup>
-        {gather.gatherCommentList.map((comment, index) => (
-          <FormGroup
-            row
-            key={index}
-            style={{ border: 'solid 1px lightgray', padding: '3%' }}
-          >
-            <Label
-              id={comment.id}
-              for={comment.nickName}
-              onClick={(e) =>
-                setReply({ isReply: true, commentId: e.target.id })
-              }
-              sm={2}
-            >
-              ⏺️{comment.nickName}
-            </Label>
-            <Col sm={8}>
-              <Input
-                id={comment.id}
-                name="comment"
-                disabled
-                value={comment.content}
-              />
-            </Col>
-            {comment.memberId == state.info.id && (
-              <Col sm={2}>
-                <Button outline onClick={(e) => deleteComment(e, comment.id)}>
-                  삭제
-                </Button>
-              </Col>
-            )}
-            {reply.isReply && reply.commentId == comment.id && (
-              <FormGroup row style={{ marginTop: '1%' }}>
-                <Label for="newReply" sm={2}>
-                  대댓글달기
+        {gather.gatherCommentList.map(
+          (comment, index) =>
+            comment.deleted || (
+              <FormGroup
+                row
+                key={index}
+                style={{ border: 'solid 1px lightgray', padding: '3%' }}
+              >
+                <Label
+                  id={comment.id}
+                  for={comment.nickName}
+                  onClick={(e) =>
+                    setReply({ isReply: true, commentId: e.target.id })
+                  }
+                  sm={2}
+                >
+                  ⏺️{comment.nickName}
                 </Label>
                 <Col sm={8}>
                   <Input
-                    id="newReply"
-                    name="newReply"
-                    value={newComment}
-                    onChange={(e) => {
-                      setNewComment(e.target.value);
-                    }}
+                    id={comment.id}
+                    name="comment"
+                    disabled
+                    value={comment.content}
                   />
                 </Col>
-                <Col sm={2}>
-                  <Button outline onClick={postReply}>
-                    등록
-                  </Button>
-                </Col>
-              </FormGroup>
-            )}
-            <div style={{ marginTop: '2%' }}>
-              {comment.gatherReplies.map((reply, index) => (
-                <FormGroup row key={index} style={{ marginLeft: '1%' }}>
-                  <Label for="comment" sm={2}>
-                    ➡️{reply.nickName}
-                  </Label>
-                  <Col sm={8}>
-                    <Input
-                      id="comment"
-                      name="comment"
-                      disabled
-                      value={reply.content}
-                    />
+                {comment.memberId == state.info.id && (
+                  <Col sm={2}>
+                    <Button
+                      outline
+                      onClick={(e) => deleteComment(e, comment.id)}
+                    >
+                      삭제
+                    </Button>
                   </Col>
-                  {reply.memberId == state.info.id && (
-                    <Col sm={2}>
-                      <Button
-                        outline
-                        onClick={(e) => {
-                          deleteReply(e, reply.id);
+                )}
+                {reply.isReply && reply.commentId == comment.id && (
+                  <FormGroup row style={{ marginTop: '1%' }}>
+                    <Label for="newReply" sm={2}>
+                      대댓글달기
+                    </Label>
+                    <Col sm={8}>
+                      <Input
+                        id="newReply"
+                        name="newReply"
+                        value={newComment}
+                        onChange={(e) => {
+                          setNewComment(e.target.value);
                         }}
-                      >
-                        삭제
+                      />
+                    </Col>
+                    <Col sm={2}>
+                      <Button outline onClick={postReply}>
+                        등록
                       </Button>
                     </Col>
+                  </FormGroup>
+                )}
+                <div style={{ marginTop: '2%' }}>
+                  {comment.gatherReplies.map(
+                    (reply, index) =>
+                      reply.deleted || (
+                        <FormGroup row key={index} style={{ marginLeft: '1%' }}>
+                          <Label for="comment" sm={2}>
+                            ➡️{reply.nickName}
+                          </Label>
+                          <Col sm={8}>
+                            <Input
+                              id="comment"
+                              name="comment"
+                              disabled
+                              value={reply.content}
+                            />
+                          </Col>
+                          {reply.memberId == state.info.id && (
+                            <Col sm={2}>
+                              <Button
+                                outline
+                                onClick={(e) => {
+                                  deleteReply(e, reply.id);
+                                }}
+                              >
+                                삭제
+                              </Button>
+                            </Col>
+                          )}
+                        </FormGroup>
+                      ),
                   )}
-                </FormGroup>
-              ))}
-            </div>
-          </FormGroup>
-        ))}
+                </div>
+              </FormGroup>
+            ),
+        )}
       </Form>
     </Container>
   );
