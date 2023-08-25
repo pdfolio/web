@@ -25,4 +25,5 @@ export const oauth2PostApi = async (url, method, data) => {
   return body.data;
 };
 
+
 axios.defaults.baseURL = 'http://192.168.0.203:8080';

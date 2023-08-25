@@ -71,7 +71,7 @@ body {
 }
 
 .skill-border {
-    border: 3px dotted;
+    border: 3px solid blue;
 }
 
 .ct-button {
@@ -195,4 +195,8 @@ body {
 .badge-location {
     font-size: 10px;
     margin: 3px
+}
+
+.button-choice {
+    border: 3px solid blue
 }
