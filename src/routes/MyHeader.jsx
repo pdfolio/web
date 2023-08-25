@@ -57,29 +57,12 @@ const MyHeader = () => {
               </Button>
             ) : (
               <>
-                <Link to="/gather/1">
-                  <Button
-                    outline
-                    style={{ marginRight: '10px', border: 'none' }}
-                  >
-                    테스트용1번모집글
-                  </Button>
-                </Link>
-
-                <Link to="/project/1">
-                  <Button
-                    outline
-                    style={{ marginRight: '10px', border: 'none' }}
-                  >
-                    테스트용1번프로젝트
-                  </Button>
-                </Link>
                 <Link to="/project/write">
                   <Button
                     outline
                     style={{ marginRight: '10px', border: 'none' }}
                   >
-                    글쓰기
+                    새 글 쓰기
                   </Button>
                 </Link>
                 <Link to="/gather/write">
@@ -87,7 +70,7 @@ const MyHeader = () => {
                     outline
                     style={{ marginRight: '10px', border: 'none' }}
                   >
-                    모집
+                    팀원 구하기
                   </Button>
                 </Link>
                 <Link to="/mypage">
