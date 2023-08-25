@@ -8,12 +8,13 @@ import ProjectWrite from '../components/wrtie/ProjectWrite';
 import GatherWrite from '../components/wrtie/GatherWrite';
 import GatherDetail from '../components/detail/GatherDetail';
 import GatherMain from '../components/gather/GatherMain';
+import ProjectMain from '../components/project/ProjectMain';
 
 const MyRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Template />}>
-        <Route path="/" />
+        <Route path="/project" element={<ProjectMain />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/project/write" element={<ProjectWrite />} />
