@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Card, CardBody, CardTitle, CardText, CardHeader, Button, CardFooter, Badge, Collapse, Input, InputGroup, InputGroupText, Carousel, CarouselIndicators, CarouselControl, CarouselItem, CarouselCaption } from 'reactstrap';
 import './GatherMain.css';
 import { gatherApiNoToken } from '../../networks/gather/gatherApi';
+import { Link } from 'react-router-dom';
 
 
 const items = [
@@ -24,19 +25,13 @@ const items = [
         key: 3,
     },
 ];
-const GatherMain = ({ args, onSearch }) => {
+const GatherMain = ({ args }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggle = () => setIsOpen(!isOpen);
-    const [searchText, setSearchText] = useState('');
 
-    const handleInputChange = (event) => {
-        setSearchText(event.target.value);
-    };
 
-    const handleSearch = () => {
-        onSearch(searchText);
-    };
+
     const [activeIndex, setActiveIndex] = useState(0);
     const [animating, setAnimating] = useState(false);
 
@@ -76,18 +71,25 @@ const GatherMain = ({ args, onSearch }) => {
         );
     });
     // -------------------------------------------------------------여기부터 데이터 송신
-
+    const skillNames = ["JAVA", "KOTLIN", "JAVASCRIPT", "TYPESCRIPT", 'PYTHON',
+        "PHP", "SPRING", "NEST", "EXPRESS", "DJANGO", "LARAVEL",
+        "REACT", "VUE", "NEXT", "NUXT", "ORACLE", "MYSQL", "POSTGRESQL",
+        "AWS", "DOCKER", "GIT"];
     const [size, setSize] = useState(5);
     const [page, setPage] = useState(0);
+    const [keyword, setKeyword] = useState("");
+    const [skills, setSkills] = useState("");
+    const [category, setCategory] = useState("");
+    const [selectedSkills, setSelectedSkills] = useState([]);
+    const [confirmSkills, setConfirmSkills] = useState([]);
     const [all, setAll] = useState([]);
 
     const getAll = async () => {
         try {
-            const data = await gatherApiNoToken(`/api/v1/gathers` +
-                `?page=${page}&size=${size}`, "GET");
+            const data = await gatherApiNoToken(`/api/v1/gather` +
+                `?page=${page}&size=${size}&keyword=${keyword}&category=${category}&skills=${skills}`, "GET");
             console.log(data)
             setAll(data);
-
 
         } catch (error) {
             console.log(error.response.data);
@@ -95,7 +97,7 @@ const GatherMain = ({ args, onSearch }) => {
     }
     useEffect(() => {
         getAll();
-    }, [page, size]);
+    }, [page, size, keyword, category, skills]);
 
     const changePage = (i) => {
         setPage(i);
@@ -105,6 +107,48 @@ const GatherMain = ({ args, onSearch }) => {
         setSize(e.target.value);
         setPage(0);
     }
+
+    const onClickCategoryHandler = (categoryName) => {
+        if (categoryName === '전체') {
+            setCategory("");
+        } else {
+            setCategory(categoryName);
+        }
+    }
+
+    const onClickSkillHandler = (skill) => {
+        const selectedSkills = skills.split(",");
+        // if (selectedSkills.includes(skill)) {
+        //     selectedSkills.filter(s => s !== skill)
+        //     // setSelectedSkills(); // 이미 선택된 스킬이면 제거
+        // } else {
+
+        //     setSelectedSkills(); // 선택되지 않은 스킬이면 추가
+        // }
+        if (selectedSkills[0] === "") selectedSkills.pop()
+
+        const filterSkill = selectedSkills.includes(skill) ?
+            selectedSkills.filter(s => s !== skill)
+            : [...selectedSkills, skill]
+        setConfirmSkills(filterSkill)
+        // console.log("filterSkill", filterSkill)
+
+        const skillsString = filterSkill.join(',');
+        setSkills(skillsString);
+        // console.log("selectedSkills", selectedSkills)
+    };
+    // console.log("confirmSkills", confirmSkills)
+
+    const [searchText, setSearchText] = useState('');
+
+    const handleInputChange = (event) => {
+        setSearchText(event.target.value);
+    };
+
+    const onClickSearchHandler = () => {
+        setKeyword(searchText);
+    };
+
 
     // -------------------------------------------------------------------------
     return (
@@ -132,32 +176,41 @@ const GatherMain = ({ args, onSearch }) => {
                     onClickHandler={next}
                 />
             </Carousel>
-            <p>{all.totalElements} 개수</p>
-            <p>{all.totalPages} 페이지</p>
-            {all.content.map((c) => (<div>{c.title}</div>))}
+            {/* <p>{all.totalElements} 개수</p>
+            <p>{all.totalPages} 페이지</p> */}
+
+            {/* {all.content?.map(
+                    (c) => (
+                        <div key={c.id}>{c.title}</div>
+                    )
+                )
+            } */}
 
 
             {/* <div style={{ "margin-left": "3.5%;" }}> */}
             <div className='category-style'>
                 <Button
                     color="primary"
-                    className='ct-button'
-                // outline 이거 없으면 선택 되있는거
+                    className={`ct-button ${category === "" ? "button-choice" : ""}`}
+                    outline
+                    onClick={() => onClickCategoryHandler('전체')}
                 >
                     전체
                 </Button>
                 {' '}
                 <Button
-                    className='ct-button'
-                    color="info"
+                    className={`ct-button ${category === "PROJECT" ? "button-choice" : ""}`}
+                    color="primary"
+                    onClick={() => onClickCategoryHandler('PROJECT')}
                     outline
                 >
                     프로젝트
                 </Button>
                 {' '}
                 <Button
-                    color="info"
-                    className='ct-button'
+                    color="primary"
+                    className={`ct-button ${category === "STUDY" ? "button-choice" : ""}`}
+                    onClick={() => onClickCategoryHandler('STUDY')}
                     outline
                 >
                     스터디
@@ -172,8 +225,8 @@ const GatherMain = ({ args, onSearch }) => {
                         value={searchText}
                         onChange={handleInputChange}
                     />
-                    <InputGroupText addonType="append">
-                        <Button color="primary" onClick={handleSearch}>Search</Button>
+                    <InputGroupText addontype="append">
+                        <Button color="primary" onClick={onClickSearchHandler}>Search</Button>
                     </InputGroupText>
                 </InputGroup>
                 <Button color="primary" onClick={toggle} style={{ marginBottom: '1rem' }}>
@@ -182,66 +235,74 @@ const GatherMain = ({ args, onSearch }) => {
                 <Collapse className='togle-style' isOpen={isOpen} {...args}>
                     <Card>
                         <CardBody>
-                            <Badge className='sill-badge-location skill-border' color="info">
-                                JAVA
-                            </Badge>
-                            <Badge className='sill-badge-location' color="info">
-                                SPRING
-                            </Badge>
-                            <Badge className='sill-badge-location' color="info">
-                                JAVASCRIPT
-                            </Badge>
+                            {skillNames.map((skill, index) => (
+                                <Badge key={index} onClick={() => onClickSkillHandler(skill)}
+                                    className={confirmSkills.includes(skill) ? 'sill-badge-location skill-border' : 'sill-badge-location'}
+                                    color="info">
+                                    {skill}
+                                </Badge>
+                            ))}
                         </CardBody>
                     </Card>
                 </Collapse>
             </div>
 
             <div className=" card-box" >
-                <Card className="my-2 ccard">
-                    <CardHeader className='card-header2'>
-                        <span className='last-day'>마감일: 2023.12.32</span>
-                        <span className='img-location'><img width={'27px'} height={'27px'} src='https://cdn-icons-png.flaticon.com/128/889/889221.png'></img></span>
-                    </CardHeader>
-                    <CardBody>
-                        <CardTitle tag="h5">
-                        </CardTitle>
-                        <CardText className="card-text-st">
-                            <p>
-                                <span className='borderItem'><img width={'28px'} height={'28px'} src='https://cdn-icons-png.flaticon.com/128/5956/5956494.png'></img></span>
-                                &nbsp;&nbsp;&nbsp;
-                                <span><img width={'28px'} height={'28px'} src='https://cdn-icons-png.flaticon.com/128/950/950232.png'></img></span>
-                            </p>
-                            <p className='title1'>여기는 제목이 들어가는 부분이다 제목 제에목 제제목목 제목 제목</p>
-                        </CardText>
-                        <Badge className='badge-location' color="primary">
-                            JAVA
-                        </Badge>
-                        <Badge className='badge-location' color="warning">
-                            SPRING
-                        </Badge>
-                        <Badge className='badge-location' color="info">
-                            JAVASCRIPT
-                        </Badge>
-                        <Badge
-                            className="text-dark badge-location"
-                            color="light"
-                        >
-                            REACT
-                        </Badge>
-                        <Badge className='badge-location' color="dark">
-                            PYTHON
-                        </Badge>
-                    </CardBody>
-                    <CardFooter className='card-footer2'>
-                        <span className='img-location2'><img width={'23px'} height={'23px'} src='https://cdn-icons-png.flaticon.com/128/2338/2338317.png'></img></span>
-                        &nbsp;
-                        <span className='id-size'>사람아이디</span>
-                        <span className='img-location3 side-size'><img width={'23px'} height={'23px'} src='https://cdn-icons-png.flaticon.com/128/4249/4249907.png'></img> 5</span>
-                        <span className='img-location4 side-size'><img width={'23px'} height={'23px'} src='https://cdn-icons-png.flaticon.com/128/64/64945.png'></img> 15</span>
-                    </CardFooter>
-                </Card>
+                {all.content?.map(
+                    (c) => (
+                        <Link to={`/gather/${c.id}`} >
+                            <Card className="my-2 ccard" key={c.id}>
+                                <CardHeader className='card-header2'>
+                                    {/* <span className='last-day'>마감일: {c.closeDate}</span> */}
+                                    <span className='last-day'>마감일:&nbsp;
+                                        {c.closeDate.map((date, index) => (
+                                            <span key={index} >
+                                                {index !== 0 && '-'}
+                                                {date}
+                                            </span>
+                                        ))}
+                                    </span>
+                                    <span className='img-location'><img width={'27px'} height={'27px'} src='https://cdn-icons-png.flaticon.com/128/889/889221.png'></img></span>
+                                </CardHeader>
+                                <CardBody>
+                                    <CardTitle tag="h5">
+                                    </CardTitle>
+                                    <CardText className="card-text-st ">
+                                        <span className={c.category === "STUDY" ? "borderItem" : ""}>
+                                            <img width={'28px'} height={'28px'} src='https://cdn-icons-png.flaticon.com/128/5956/5956494.png'></img>
+                                        </span>
+                                        &nbsp;&nbsp;&nbsp;
+                                        <span className={c.category === "PROJECT" ? "borderItem" : ""}>
+                                            <img width={'28px'} height={'28px'} src='https://cdn-icons-png.flaticon.com/128/950/950232.png'></img>
+                                        </span>
+                                        <br></br>
+                                        <br></br>
+                                        <span className='title1'>{c.title}</span>
+                                    </CardText>
+                                    {c.skills?.map((item, index) => (
+                                        <Badge key={index} className='badge-location' color={index % 2 === 0 ? "info" : "primary"}>
+                                            {item.skill}
+                                        </Badge>
+                                    ))}
+
+                                    {/* color="info" "primary" */}
+
+                                </CardBody>
+                                <CardFooter className='card-footer2'>
+                                    <span className='img-location2'><img width={'23px'} height={'23px'} src='https://cdn-icons-png.flaticon.com/128/2338/2338317.png'></img></span>
+                                    &nbsp;
+                                    <span className='id-size'>{c.memberName}</span>
+                                    <span className='img-location3 side-size'><img width={'23px'} height={'23px'} src='https://cdn-icons-png.flaticon.com/128/4249/4249907.png'></img> 5</span>
+                                    <span className='img-location4 side-size'><img width={'23px'} height={'23px'} src='https://cdn-icons-png.flaticon.com/128/64/64945.png'></img> 15</span>
+                                </CardFooter>
+                            </Card>
+                        </Link>
+                    )
+                )
+                }
+
             </div >
-        </div>
+        </div >
     );
 };
 
