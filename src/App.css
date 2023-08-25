@@ -2,6 +2,25 @@
   text-align: center;
 }
 
+.Heart {
+  text-align: center;
+  margin-top: 20px;
+  display: inline-block
+}
+
+.Heart img {
+  width: 30px;
+  height: 30px;
+}
+
+/* .Heart p {
+  display: none;
+} */
+
+.liked {
+  filter: brightness(1.5);
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -32,7 +51,9 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+
 }
