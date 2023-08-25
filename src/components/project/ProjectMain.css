@@ -71,7 +71,7 @@ body {
 }
 
 .skill-border {
-    border: 3px dotted;
+    border: 3px solid blue;
 }
 
 .ct-button {
@@ -176,7 +176,7 @@ body {
 }
 
 .img-location {
-    margin-left: 48%;
+    margin-left: 42%;
 }
 
 /* .img-location2 {
@@ -185,7 +185,7 @@ body {
 
 /* import './GatherMain.css'; */
 .img-location3 {
-    margin-left: 35%;
+    margin-left: 15%;
 }
 
 .img-location4 {
@@ -194,5 +194,10 @@ body {
 
 .badge-location {
     font-size: 10px;
-    margin: 3px
+    margin: 3px;
+    margin-top: 22px;
+}
+
+.button-choice {
+    border: 3px solid blue
 }
