@@ -47,7 +47,7 @@ const Oauth2Process = () => {
   }, []);
   return (
     <div>
-      <img src="https://image.kmib.co.kr/online_image/2021/0620/2021061813290340412_1623990543_0015964468.jpg" />
+      <img src="https://mir-s3-cdn-cf.behance.net/project_modules/fs/b6e0b072897469.5bf6e79950d23.gif" />
     </div>
   );
 };
