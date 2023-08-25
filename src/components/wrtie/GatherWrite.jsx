@@ -57,7 +57,13 @@ const GatherWrite = ({ setContent }) => {
   };
 
   return (
-    <Container fluid="md">
+    <Container
+      fluid="md"
+      style={{
+        border: 'solid 1px lightgray',
+        padding: '3%',
+      }}
+    >
       <Form>
         <FormGroup row>
           <Label for="title" sm={2}>

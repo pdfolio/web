@@ -8,7 +8,11 @@ import ProjectWrite from '../components/wrtie/ProjectWrite';
 import GatherWrite from '../components/wrtie/GatherWrite';
 import GatherDetail from '../components/detail/GatherDetail';
 import GatherMain from '../components/gather/GatherMain';
+<<<<<<< HEAD
 import ProjectMain from '../components/project/ProjectMain';
+=======
+import ProjectDetail from '../components/detail/ProjectDetail';
+>>>>>>> da85011062980967e330b65cddddda52edb17bad
 
 const MyRoutes = () => {
   return (
@@ -17,10 +21,12 @@ const MyRoutes = () => {
         <Route path="/project" element={<ProjectMain />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/mypage" element={<Mypage />} />
+
         <Route path="/project/write" element={<ProjectWrite />} />
         <Route path="/gather/write" element={<GatherWrite />} />
+
         <Route path="/gather/:id" element={<GatherDetail />} />
-        <Route path="/gather/write" element={<GatherWrite />} />
+        <Route path="/project/:id" element={<ProjectDetail />} />
         <Route path="/gather" element={<GatherMain />} />
       </Route>
       <Route path="/callback/login" element={<Oauth2Process />} />
