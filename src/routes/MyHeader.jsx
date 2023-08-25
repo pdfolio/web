@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Nav, Navbar } from 'reactstrap';
+import { Button, Nav, Navbar, NavbarBrand } from 'reactstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import LoginModal from '../components/login/LoginModal';
 import { isLogin } from '../store/store';
@@ -20,13 +20,26 @@ const MyHeader = () => {
       <>
         <LoginModal toggle={toggle} modal={modal} />
         <Navbar>
-          <Link to="/">
-            <img
-              width={150}
-              src="https://github.com/pdfolio/web/assets/71807768/be9bd7df-0b32-484b-a1c9-de9a0a1bda1e"
-              alt="logo"
-            />
-          </Link>
+          <NavbarBrand>
+            <Link to="/">
+              <img
+                width={150}
+                src="https://github.com/pdfolio/web/assets/71807768/be9bd7df-0b32-484b-a1c9-de9a0a1bda1e"
+                alt="logo"
+              />
+            </Link>
+
+            <Link to="/">
+              <Button outline style={{ marginRight: '10px', border: 'none' }}>
+                Project
+              </Button>
+            </Link>
+            <Link to="/gather">
+              <Button outline style={{ marginRight: '10px', border: 'none' }}>
+                Gather
+              </Button>
+            </Link>
+          </NavbarBrand>
           <Nav
             style={{
               display: 'flex',
