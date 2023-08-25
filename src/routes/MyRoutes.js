@@ -11,12 +11,11 @@ import GatherMain from '../components/gather/GatherMain';
 import ProjectMain from '../components/project/ProjectMain';
 import ProjectDetail from '../components/detail/ProjectDetail';
 
-
 const MyRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Template />}>
-        <Route path="/project" element={<ProjectMain />} />
+        <Route path="/" element={<ProjectMain />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/mypage" element={<Mypage />} />
 
