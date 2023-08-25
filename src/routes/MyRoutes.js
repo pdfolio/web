@@ -8,11 +8,9 @@ import ProjectWrite from '../components/wrtie/ProjectWrite';
 import GatherWrite from '../components/wrtie/GatherWrite';
 import GatherDetail from '../components/detail/GatherDetail';
 import GatherMain from '../components/gather/GatherMain';
-<<<<<<< HEAD
 import ProjectMain from '../components/project/ProjectMain';
-=======
 import ProjectDetail from '../components/detail/ProjectDetail';
->>>>>>> da85011062980967e330b65cddddda52edb17bad
+
 
 const MyRoutes = () => {
   return (
